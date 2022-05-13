@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OrderRequestDto {
+    @NotNull
     @Min(value = 1)
     private Integer quantity;
     @NotNull

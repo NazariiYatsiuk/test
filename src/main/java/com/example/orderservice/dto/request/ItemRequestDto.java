@@ -17,9 +17,11 @@ public class ItemRequestDto {
     private Category category;
     @NotNull
     private String model;
+    @NotNull
     @Positive
     private BigDecimal price;
     @Size(max = 200)
     private String description;
+    @NotNull
     private Integer quantity;
 }
