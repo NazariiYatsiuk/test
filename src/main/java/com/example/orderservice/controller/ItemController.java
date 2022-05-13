@@ -8,7 +8,6 @@ import com.example.orderservice.service.ItemService;
 import com.example.orderservice.service.mapper.ItemMapper;
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,11 +28,11 @@ public class ItemController {
     @PostMapping
     public ItemResponseDto create(@RequestBody @Valid ItemRequestDto requestDto) {
         Item item = itemMapper.mapToModel(requestDto);
-        return itemMapper.mapToDto(itemService.add(item));
+        return itemMapper.mapToDto(itemService.save(item));
     }
 
-    @GetMapping("/{category}/with-lowest-price")
-    public ItemResponseDto getWithLowestPriceInCategory(@PathVariable String category,
+    @GetMapping("/with-lowest-price")
+    public ItemResponseDto getWithLowestPriceInCategory(@RequestParam String category,
                                                         @RequestParam Integer quantity) {
         Item item = itemService
                 .findWithLowestPriceInCategory(Category

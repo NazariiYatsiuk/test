@@ -5,13 +5,13 @@ import com.example.orderservice.model.Item;
 import java.util.Optional;
 
 public interface ItemService {
-    Item add(Item item);
+    Item save(Item item);
 
     Optional<Item> findById(Long id);
 
     Item findWithLowestPriceInCategory(Category category, Integer quantity);
 
-    void decreaseItemQuantity(Item item, Integer subtractor);
+    boolean decreaseItemQuantity(Item item, Integer subtractor);
 
-    void increaseItemQuantity(Item item, Integer addition);
+    boolean increaseItemQuantity(Item item, Integer addition);
 }

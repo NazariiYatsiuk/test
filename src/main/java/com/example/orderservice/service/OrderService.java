@@ -2,16 +2,16 @@ package com.example.orderservice.service;
 
 import com.example.orderservice.model.Category;
 import com.example.orderservice.model.Order;
-import java.util.List;
+import java.util.Optional;
 
 public interface OrderService {
     Order save(Order order);
 
     boolean isNotValid(Order order);
 
-    List<Order> findAllByItemCategory(Category category);
+    Optional<Order> findById(Long id);
 
     void delete(Long id);
 
-    void deleteAllNotValidByCategory(Category category);
+    boolean deleteAllNotValidInCategory(Category category);
 }

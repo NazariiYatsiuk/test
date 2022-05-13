@@ -8,22 +8,15 @@ import com.example.orderservice.service.OrderService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
-    private OrderService orderService;
+    private final OrderService orderService;
 
-    @Autowired
-    public void setOrderService(@Lazy OrderService orderService) {
-        this.orderService = orderService;
-    }
-
-    public Item add(Item item) {
+    public Item save(Item item) {
         return itemRepository.save(item);
     }
 
@@ -34,7 +27,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Item findWithLowestPriceInCategory(Category category, Integer requestedQuantity) {
-        orderService.deleteAllNotValidByCategory(category);
+        orderService.deleteAllNotValidInCategory(category);
         List<Item> items = itemRepository.findAllWithLowestPriceInCategory(category);
         Item item = items.stream()
                 .findFirst()
@@ -49,7 +42,7 @@ public class ItemServiceImpl implements ItemService {
         return item;
     }
 
-    public void decreaseItemQuantity(Item item, Integer subtractor) {
+    public boolean decreaseItemQuantity(Item item, Integer subtractor) {
         Integer itemQuantity = item.getQuantity();
         if (itemQuantity <= subtractor) {
             item.setQuantity(0);
@@ -58,11 +51,13 @@ public class ItemServiceImpl implements ItemService {
             item.setQuantity(itemQuantity - subtractor);
             itemRepository.save(item);
         }
+        return true;
     }
 
     @Override
-    public void increaseItemQuantity(Item item, Integer addition) {
+    public boolean increaseItemQuantity(Item item, Integer addition) {
         item.setQuantity(item.getQuantity() + addition);
         itemRepository.save(item);
+        return true;
     }
 }
